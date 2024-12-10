@@ -1,0 +1,6 @@
+flask
+pymongo
+openai
+beautifulsoup4
+requests
+sqlite3
