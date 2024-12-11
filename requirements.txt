@@ -1,6 +1,10 @@
 flask
 pymongo
+pymongo[srv]
 openai
 beautifulsoup4
 requests
-sqlite3
+# sqlite3
+transformers
+nltk
+torch

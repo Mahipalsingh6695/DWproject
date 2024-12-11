@@ -1,33 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        #chat-container { max-width: 600px; margin: auto; }
-        #messages { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; margin-bottom: 10px; }
-        input, button { padding: 10px; margin: 5px; }
-    </style>
 </head>
 <body>
-    <div id="chat-container">
-        <div id="messages"></div>
-        <input id="user-input" type="text" placeholder="Type your message...">
-        <button onclick="sendMessage()">Send</button>
-    </div>
+    <h1>Chat with Bot</h1>
+    <input type="text" id="query" placeholder="Ask me anything">
+    <button onclick="sendQuery()">Send</button>
+    <p id="response"></p>
+
     <script>
-        async function sendMessage() {
-            const userInput = document.getElementById('user-input').value;
-            const response = await fetch('/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: userInput })
-            });
-            const data = await response.json();
-            const messages = document.getElementById('messages');
-            messages.innerHTML += `<p>User: ${userInput}</p>`;
-            messages.innerHTML += `<p>Bot: ${data.reply}</p>`;
-            document.getElementById('user-input').value = '';
+        async function sendQuery() {
+            const query = document.getElementById("query").value;
+
+            try {
+                const response = await fetch("http://127.0.0.1:5000/chat", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({query: query}),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                document.getElementById("response").innerText = data.response;
+            } catch (error) {
+                console.error("Error during fetch:", error);
+                document.getElementById("response").innerText = "An error occurred.";
+            }
         }
     </script>
 </body>
